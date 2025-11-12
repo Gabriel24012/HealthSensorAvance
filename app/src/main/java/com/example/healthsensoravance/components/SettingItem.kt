@@ -28,6 +28,6 @@ fun SettingItem(label: String, icon: ImageVector, onClick: () -> Unit) {
     ) {
         Icon(icon, contentDescription = label, tint = PrimaryBlue, modifier = Modifier.size(24.dp).padding(end = 16.dp))
         Text(label, modifier = Modifier.weight(1f), color = DarkText)
-        Icon(Icons.Default.Build, contentDescription = "Ir", tint = DarkText.copy(alpha = 0.5f)) // El que elegiste
+        Icon(Icons.Default.Build, contentDescription = "Ir", tint = DarkText.copy(alpha = 0.5f))
     }
 }

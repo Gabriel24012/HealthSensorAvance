@@ -36,15 +36,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import java.util.Calendar
 
-// Data class simple para representar un recordatorio
 data class MedicationReminder(val name: String, val time: String)
 
 @Composable
 fun RecordatoriosScreen(navController: NavHostController) {
-    // --- Estado de la UI ---
 
-    // Lista mutable para guardar los recordatorios.
-    // Usamos remember para que persista durante recomposiciones.
+    //  remember para que persista durante recomposiciones.
     val reminders = remember {
         mutableStateListOf(
             MedicationReminder("Paracetamol 500mg", "08:00"),
@@ -52,16 +49,12 @@ fun RecordatoriosScreen(navController: NavHostController) {
         )
     }
 
-    // Estado para los campos de texto del formulario
     var medicationName by remember { mutableStateOf("") }
     var medicationTime by remember { mutableStateOf("") }
 
-    // Contexto para mostrar el TimePickerDialog
     val context = LocalContext.current
 
-    // --- Layout de la UI ---
 
-    // Columna principal que organiza la pantalla verticalmente
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +62,6 @@ fun RecordatoriosScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.spacedBy(16.dp) // Espacio entre elementos
     ) {
 
-        // Título de la pantalla
         Text(
             text = "Recordatorios",
             style = MaterialTheme.typography.headlineLarge,
@@ -77,14 +69,12 @@ fun RecordatoriosScreen(navController: NavHostController) {
             color = Color(0xFF0D47A1) // Azul oscuro para el título
         )
 
-        // Sección "Medicamentos actuales"
         Text(
             text = "Medicamentos actuales",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )
 
-        // Tarjeta para la lista de medicamentos
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
@@ -95,23 +85,20 @@ fun RecordatoriosScreen(navController: NavHostController) {
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Itera sobre la lista de recordatorios y muestra cada uno
                 reminders.forEach { reminder ->
                     ReminderItem(reminder = reminder)
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp)) // Espacio extra
+        Spacer(modifier = Modifier.height(8.dp))
 
-        // Sección "Agregar medicamento"
         Text(
             text = "Agregar medicamento",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )
 
-        // Campo de texto para el nombre
         OutlinedTextField(
             value = medicationName,
             onValueChange = { medicationName = it },
@@ -120,23 +107,20 @@ fun RecordatoriosScreen(navController: NavHostController) {
             singleLine = true
         )
 
-        // Campo de texto para la hora (falso)
-        // Se deshabilita para escritura y se usa clickable para abrir el selector de hora
         OutlinedTextField(
             value = medicationTime,
-            onValueChange = { }, // No hace nada al escribir
+            onValueChange = { },
             label = { Text("Hora (HH:mm)") },
             placeholder = { Text("--:--") },
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClickLabel = "Seleccionar hora") {
-                    // Muestra el TimePicker al hacer clic
                     showTimePicker(context) { hour, minute ->
                         medicationTime = String.format("%02d:%02d", hour, minute)
                     }
                 },
-            readOnly = true, // El usuario no puede escribir
-            enabled = false, // Deshabilitado, pero con colores personalizados
+            readOnly = true,
+            enabled = false,
             colors = OutlinedTextFieldDefaults.colors(
                 disabledTextColor = MaterialTheme.colorScheme.onSurface,
                 disabledBorderColor = MaterialTheme.colorScheme.outline,
@@ -145,25 +129,21 @@ fun RecordatoriosScreen(navController: NavHostController) {
             )
         )
 
-        // Botón "Guardar Recordatorio"
         Button(
             onClick = {
-                // Lógica simple para agregar a la lista (sin validación)
                 if (medicationName.isNotBlank() && medicationTime.isNotBlank()) {
                     reminders.add(MedicationReminder(medicationName, medicationTime))
-                    // Limpia los campos
                     medicationName = ""
                     medicationTime = ""
                 }
             },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF304FFE)) // Azul
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF304FFE))
         ) {
             Text(text = "Guardar Recordatorio", Modifier.padding(vertical = 8.dp))
         }
 
-        // Botón "Probar Notificación"
         Button(
             onClick = { /* Aquí iría la lógica para probar una notificación */ },
             modifier = Modifier.fillMaxWidth(),
@@ -175,9 +155,7 @@ fun RecordatoriosScreen(navController: NavHostController) {
     }
 }
 
-/**
- * Composable para mostrar un solo ítem de recordatorio en la lista.
- */
+
 @Composable
 private fun ReminderItem(reminder: MedicationReminder) {
     Row(
@@ -185,17 +163,15 @@ private fun ReminderItem(reminder: MedicationReminder) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        // Nombre del medicamento
         Text(
             text = reminder.name,
             style = MaterialTheme.typography.bodyLarge
         )
 
-        // "Pastilla" azul con la hora
         Surface(
             shape = RoundedCornerShape(16.dp),
-            color = Color(0xFF304FFE), // Azul
-            contentColor = Color.White // Texto blanco
+            color = Color(0xFF304FFE),
+            contentColor = Color.White
         ) {
             Text(
                 text = reminder.time,
@@ -207,9 +183,7 @@ private fun ReminderItem(reminder: MedicationReminder) {
     }
 }
 
-/**
- * Función helper para mostrar un TimePickerDialog.
- */
+
 private fun showTimePicker(
     context: Context,
     onTimeSelected: (Int, Int) -> Unit
@@ -222,6 +196,6 @@ private fun showTimePicker(
         },
         calendar.get(Calendar.HOUR_OF_DAY),
         calendar.get(Calendar.MINUTE),
-        true // true para formato 24 horas
+        true
     ).show()
 }

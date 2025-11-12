@@ -1,20 +1,3 @@
-//    package com.example.healthsensoravance.screens
-//
-//    import androidx.compose.foundation.layout.padding
-//    import androidx.compose.material3.Text
-//    import androidx.compose.runtime.Composable
-//    import androidx.compose.ui.Modifier
-//    import androidx.compose.ui.unit.dp
-//    import androidx.navigation.NavHostController
-//    import com.example.healthsensoravance.components.BaseContentScreen
-//
-//
-//    @Composable
-//    fun FichaMedicaScreen(navController: NavHostController) {
-//        BaseContentScreen(title = "Ficha Médica Personal", showBack = true, navController = navController) {
-//            Text("Aquí se gestionan tus datos médicos, alergias, tipo de sangre, etc.", Modifier.padding(16.dp))
-//        }
-//    }
 
 package com.example.healthsensoravance.screens
 
@@ -64,15 +47,13 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun FichaMedicaScreen(navController: NavHostController) {
-    // --- Estados locales para la demo ---
-    // En una app real, esto vendría de un ViewModel
     var edad by remember { mutableStateOf("") }
     var peso by remember { mutableStateOf("") }
     var altura by remember { mutableStateOf("") }
     var selectedBloodType by remember { mutableStateOf<String?>(null) }
     val bloodTypes = listOf("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-")
 
-    var hasAlergias by remember { mutableStateOf(true) } // 'true' para que coincida con la imagen
+    var hasAlergias by remember { mutableStateOf(true) }
     var alergiasDetails by remember { mutableStateOf("") }
     var hasEnfermedades by remember { mutableStateOf(true) }
     var enfermedadesDetails by remember { mutableStateOf("") }
@@ -82,7 +63,6 @@ fun FichaMedicaScreen(navController: NavHostController) {
     var hasSeguro by remember { mutableStateOf(true) }
     var hasCirugias by remember { mutableStateOf(true) }
     var cirugiasDetails by remember { mutableStateOf("") }
-    // --- Fin de los estados locales ---
 
     Column(
         modifier = Modifier
@@ -91,16 +71,14 @@ fun FichaMedicaScreen(navController: NavHostController) {
             .padding(16.dp)
             .navigationBarsPadding()
     ) {
-        // Título
         Text(
             text = "Ficha Médica",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF3F51B5), // Un azul similar al de la imagen
+            color = Color(0xFF3F51B5),
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        // Campos de texto para Edad, Peso, Altura
         InfoTextField(
             value = edad,
             onValueChange = { edad = it },
@@ -112,23 +90,21 @@ fun FichaMedicaScreen(navController: NavHostController) {
             value = peso,
             onValueChange = { peso = it },
             label = "Peso (kg)",
-            icon = Icons.Outlined.Info, // Cambiado de MonitorWeight
+            icon = Icons.Outlined.Info,
             keyboardType = KeyboardType.Decimal
         )
         InfoTextField(
             value = altura,
             onValueChange = { altura = it },
             label = "Altura (cm)",
-            icon = Icons.Outlined.Info, // Cambiado de Height
+            icon = Icons.Outlined.Info,
             keyboardType = KeyboardType.Number
         )
 
         Spacer(Modifier.height(24.dp))
 
-        // Tipo de sangre
         Text("Tipo de sangre", style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.height(8.dp))
-        // Usamos FlowRow para que los chips se ajusten al espacio
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -144,12 +120,11 @@ fun FichaMedicaScreen(navController: NavHostController) {
 
         Spacer(Modifier.height(24.dp))
 
-        // Secciones con Switch y TextField
         SwitchRowWithTextField(
             label = "Alergias",
-            icon = Icons.Outlined.Warning, // Cambiado de Medication
+            icon = Icons.Outlined.Warning,
             checked = hasAlergias,
-            onCheckedChange = { hasAlergias = it }, // Error corregido: Era onValueChange
+            onCheckedChange = { hasAlergias = it },
             details = alergiasDetails,
             onDetailsChange = { alergiasDetails = it }
         )
@@ -165,43 +140,39 @@ fun FichaMedicaScreen(navController: NavHostController) {
 
         SwitchRowWithTextField(
             label = "Medicamentos",
-            icon = Icons.Outlined.Warning, // Cambiado de Medication
+            icon = Icons.Outlined.Warning,
             checked = hasMedicamentos,
-            onCheckedChange = { hasMedicamentos = it }, // Error corregido: Era onValueCodeChange
+            onCheckedChange = { hasMedicamentos = it },
             details = medicamentosDetails,
             onDetailsChange = { medicamentosDetails = it }
         )
 
-        // NSS (sin switch)
         InfoTextField(
             value = nss,
             onValueChange = { nss = it },
             label = "NSS Ingresa tu NSS",
-            icon = Icons.Outlined.Lock, // Cambiado de Fingerprint
+            icon = Icons.Outlined.Lock,
             keyboardType = KeyboardType.Number
         )
 
-        // Seguro (solo switch)
         SwitchRow(
             label = "Seguro de Gastos Mayores",
-            icon = Icons.Outlined.Edit, // Cambiado de Description
+            icon = Icons.Outlined.Edit,
             checked = hasSeguro,
             onCheckedChange = { hasSeguro = it }
         )
 
-        // Cirugías (con switch y textfield)
         SwitchRowWithTextField(
             label = "Cirugías",
-            icon = Icons.Outlined.Info, // Cambiado de ContentCut
+            icon = Icons.Outlined.Info,
             checked = hasCirugias,
-            onCheckedChange = { hasCirugias = it }, // Error corregido: Era onValueChange
+            onCheckedChange = { hasCirugias = it },
             details = cirugiasDetails,
             onDetailsChange = { cirugiasDetails = it }
         )
 
         Spacer(Modifier.height(24.dp))
 
-        // Botones
         Button(
             onClick = { /* TODO: Lógica para guardar datos */ },
             modifier = Modifier
@@ -219,7 +190,7 @@ fun FichaMedicaScreen(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)) // Verde
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
         ) {
             Text("Generar QR para médico", fontSize = 16.sp)
         }
@@ -310,7 +281,6 @@ private fun SwitchRowWithTextField(
             Text(label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
             Switch(checked = checked, onCheckedChange = onCheckedChange)
         }
-        // El campo de texto está habilitado/deshabilitado según el switch
         OutlinedTextField(
             value = details,
             onValueChange = onDetailsChange,
