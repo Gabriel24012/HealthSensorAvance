@@ -39,12 +39,12 @@ fun BaseContentScreen(
                 title = { Text(title, fontWeight = FontWeight.SemiBold, fontSize = 20.sp) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = BackgroundWhite, titleContentColor = DarkText),
                 navigationIcon = {
-                    // Botón "Volver" funcional
                     if (showBack && navController != null) {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
                         }
                     }
+
                 }
             )
         }
@@ -52,8 +52,8 @@ fun BaseContentScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding) // Padding del TopAppBar
-                .padding(paddingValues) // Padding del BottomBar (si existe)
+                .padding(innerPadding)
+                .padding(paddingValues)
             ,horizontalAlignment = Alignment.CenterHorizontally
         ) {
             content()

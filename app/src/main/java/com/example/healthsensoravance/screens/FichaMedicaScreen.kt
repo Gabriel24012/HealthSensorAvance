@@ -1,17 +1,325 @@
+//    package com.example.healthsensoravance.screens
+//
+//    import androidx.compose.foundation.layout.padding
+//    import androidx.compose.material3.Text
+//    import androidx.compose.runtime.Composable
+//    import androidx.compose.ui.Modifier
+//    import androidx.compose.ui.unit.dp
+//    import androidx.navigation.NavHostController
+//    import com.example.healthsensoravance.components.BaseContentScreen
+//
+//
+//    @Composable
+//    fun FichaMedicaScreen(navController: NavHostController) {
+//        BaseContentScreen(title = "Ficha Médica Personal", showBack = true, navController = navController) {
+//            Text("Aquí se gestionan tus datos médicos, alergias, tipo de sangre, etc.", Modifier.padding(16.dp))
+//        }
+//    }
+
 package com.example.healthsensoravance.screens
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.healthsensoravance.components.BaseContentScreen
-
 
 @Composable
 fun FichaMedicaScreen(navController: NavHostController) {
-    BaseContentScreen(title = "Ficha Médica Personal", showBack = true, navController = navController) {
-        Text("Aquí se gestionan tus datos médicos, alergias, tipo de sangre, etc.", Modifier.padding(16.dp))
+    // --- Estados locales para la demo ---
+    // En una app real, esto vendría de un ViewModel
+    var edad by remember { mutableStateOf("") }
+    var peso by remember { mutableStateOf("") }
+    var altura by remember { mutableStateOf("") }
+    var selectedBloodType by remember { mutableStateOf<String?>(null) }
+    val bloodTypes = listOf("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-")
+
+    var hasAlergias by remember { mutableStateOf(true) } // 'true' para que coincida con la imagen
+    var alergiasDetails by remember { mutableStateOf("") }
+    var hasEnfermedades by remember { mutableStateOf(true) }
+    var enfermedadesDetails by remember { mutableStateOf("") }
+    var hasMedicamentos by remember { mutableStateOf(true) }
+    var medicamentosDetails by remember { mutableStateOf("") }
+    var nss by remember { mutableStateOf("") }
+    var hasSeguro by remember { mutableStateOf(true) }
+    var hasCirugias by remember { mutableStateOf(true) }
+    var cirugiasDetails by remember { mutableStateOf("") }
+    // --- Fin de los estados locales ---
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp)
+            .navigationBarsPadding()
+    ) {
+        // Título
+        Text(
+            text = "Ficha Médica",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF3F51B5), // Un azul similar al de la imagen
+            modifier = Modifier.padding(bottom = 24.dp)
+        )
+
+        // Campos de texto para Edad, Peso, Altura
+        InfoTextField(
+            value = edad,
+            onValueChange = { edad = it },
+            label = "Edad",
+            icon = Icons.Outlined.Person,
+            keyboardType = KeyboardType.Number
+        )
+        InfoTextField(
+            value = peso,
+            onValueChange = { peso = it },
+            label = "Peso (kg)",
+            icon = Icons.Outlined.Info, // Cambiado de MonitorWeight
+            keyboardType = KeyboardType.Decimal
+        )
+        InfoTextField(
+            value = altura,
+            onValueChange = { altura = it },
+            label = "Altura (cm)",
+            icon = Icons.Outlined.Info, // Cambiado de Height
+            keyboardType = KeyboardType.Number
+        )
+
+        Spacer(Modifier.height(24.dp))
+
+        // Tipo de sangre
+        Text("Tipo de sangre", style = MaterialTheme.typography.titleMedium)
+        Spacer(Modifier.height(8.dp))
+        // Usamos FlowRow para que los chips se ajusten al espacio
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            bloodTypes.forEach { type ->
+                BloodTypeChip(
+                    text = type,
+                    isSelected = selectedBloodType == type,
+                    onSelected = { selectedBloodType = type }
+                )
+            }
+        }
+
+        Spacer(Modifier.height(24.dp))
+
+        // Secciones con Switch y TextField
+        SwitchRowWithTextField(
+            label = "Alergias",
+            icon = Icons.Outlined.Warning, // Cambiado de Medication
+            checked = hasAlergias,
+            onCheckedChange = { hasAlergias = it }, // Error corregido: Era onValueChange
+            details = alergiasDetails,
+            onDetailsChange = { alergiasDetails = it }
+        )
+
+        SwitchRowWithTextField(
+            label = "Enfermedades crónicas",
+            icon = Icons.Outlined.FavoriteBorder,
+            checked = hasEnfermedades,
+            onCheckedChange = { hasEnfermedades = it },
+            details = enfermedadesDetails,
+            onDetailsChange = { enfermedadesDetails = it }
+        )
+
+        SwitchRowWithTextField(
+            label = "Medicamentos",
+            icon = Icons.Outlined.Warning, // Cambiado de Medication
+            checked = hasMedicamentos,
+            onCheckedChange = { hasMedicamentos = it }, // Error corregido: Era onValueCodeChange
+            details = medicamentosDetails,
+            onDetailsChange = { medicamentosDetails = it }
+        )
+
+        // NSS (sin switch)
+        InfoTextField(
+            value = nss,
+            onValueChange = { nss = it },
+            label = "NSS Ingresa tu NSS",
+            icon = Icons.Outlined.Lock, // Cambiado de Fingerprint
+            keyboardType = KeyboardType.Number
+        )
+
+        // Seguro (solo switch)
+        SwitchRow(
+            label = "Seguro de Gastos Mayores",
+            icon = Icons.Outlined.Edit, // Cambiado de Description
+            checked = hasSeguro,
+            onCheckedChange = { hasSeguro = it }
+        )
+
+        // Cirugías (con switch y textfield)
+        SwitchRowWithTextField(
+            label = "Cirugías",
+            icon = Icons.Outlined.Info, // Cambiado de ContentCut
+            checked = hasCirugias,
+            onCheckedChange = { hasCirugias = it }, // Error corregido: Era onValueChange
+            details = cirugiasDetails,
+            onDetailsChange = { cirugiasDetails = it }
+        )
+
+        Spacer(Modifier.height(24.dp))
+
+        // Botones
+        Button(
+            onClick = { /* TODO: Lógica para guardar datos */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5))
+        ) {
+            Text("Guardar", fontSize = 16.sp)
+        }
+        Spacer(Modifier.height(12.dp))
+        Button(
+            onClick = {
+                navController.navigate("QR")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)) // Verde
+        ) {
+            Text("Generar QR para médico", fontSize = 16.sp)
+        }
     }
+}
+
+/**
+ * Composable reutilizable para los campos de texto principales (Edad, Peso, Altura, NSS)
+ */
+@Composable
+private fun InfoTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    icon: ImageVector,
+    keyboardType: KeyboardType = KeyboardType.Text
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        leadingIcon = { Icon(icon, contentDescription = label) },
+        modifier = Modifier.fillMaxWidth(),
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        singleLine = true
+    )
+    Spacer(Modifier.height(12.dp))
+}
+
+/**
+ * Composable reutilizable para los chips de tipo de sangre
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BloodTypeChip(
+    text: String,
+    isSelected: Boolean,
+    onSelected: () -> Unit
+) {
+    FilterChip(
+        selected = isSelected,
+        onClick = onSelected,
+        label = { Text(text) },
+        shape = CircleShape,
+        modifier = Modifier.padding(horizontal = 2.dp)
+    )
+}
+
+/**
+ * Composable reutilizable para filas que solo tienen un switch (ej. Seguro)
+ */
+@Composable
+private fun SwitchRow(
+    label: String,
+    icon: ImageVector,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(icon, contentDescription = label, modifier = Modifier.padding(end = 8.dp))
+        Text(label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+        Switch(checked = checked, onCheckedChange = onCheckedChange)
+    }
+    Spacer(Modifier.height(12.dp))
+}
+
+/**
+ * Composable reutilizable para filas con switch y campo de texto (ej. Alergias)
+ */
+@Composable
+private fun SwitchRowWithTextField(
+    label: String,
+    icon: ImageVector,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    details: String,
+    onDetailsChange: (String) -> Unit
+) {
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(icon, contentDescription = label, modifier = Modifier.padding(end = 8.dp))
+            Text(label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+            Switch(checked = checked, onCheckedChange = onCheckedChange)
+        }
+        // El campo de texto está habilitado/deshabilitado según el switch
+        OutlinedTextField(
+            value = details,
+            onValueChange = onDetailsChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp),
+            placeholder = { Text("Detalles...") },
+            enabled = checked
+        )
+    }
+    Spacer(Modifier.height(12.dp))
 }

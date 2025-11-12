@@ -15,7 +15,9 @@ import com.example.healthsensoravance.screens.RecordatoriosScreen
 import com.example.healthsensoravance.screens.PerfilScreen
 import com.example.healthsensoravance.screens.DatosSaludScreen
 import com.example.healthsensoravance.components.MainAppLayout
-    @Composable
+import com.example.healthsensoravance.screens.QR
+
+@Composable
     fun HealthSensorApp() {
         val navController = rememberNavController()
 
@@ -35,6 +37,8 @@ import com.example.healthsensoravance.components.MainAppLayout
             composable(Routes.RECORDATORIOS) { RecordatoriosScreen(navController) }
             composable(Routes.PERFIL) { PerfilScreen(navController) }
             composable(Routes.DATOS_SALUD) { DatosSaludScreen(navController) }
+            composable(Routes.QR) { QR(navController) }
+
         }
     }
 

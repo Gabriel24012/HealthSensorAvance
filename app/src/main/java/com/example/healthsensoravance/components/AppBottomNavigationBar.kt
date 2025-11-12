@@ -34,7 +34,7 @@ fun AppBottomNavigationBar(navController: NavHostController) {
     NavigationBar(
         containerColor = BackgroundWhite,
         modifier = Modifier
-            .navigationBarsPadding() // ⬅ respeta la barra de navegación del sistema
+            .navigationBarsPadding()
             .height(70.dp)
     ) {
         items.forEach { item ->

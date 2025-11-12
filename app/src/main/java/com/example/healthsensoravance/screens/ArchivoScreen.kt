@@ -17,7 +17,10 @@ fun ArchivoScreen(navController: NavHostController, paddingValues: PaddingValues
         val isLandscape = LocalConfiguration.current.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
         val gridItems = listOf(
             Triple("Ficha Médica", Icons.Default.FavoriteBorder, Routes.FICHA_MEDICA),
-            Triple("Recordatorios", Icons.Default.DateRange, Routes.RECORDATORIOS)
+            Triple("Recordatorios", Icons.Default.DateRange, Routes.RECORDATORIOS),
+            Triple("QR", Icons.Default.DateRange, Routes.QR),
+
+
         )
 
         Row(
