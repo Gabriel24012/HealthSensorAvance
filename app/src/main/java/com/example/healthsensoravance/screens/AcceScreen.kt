@@ -9,8 +9,8 @@ package com.example.healthsensoravance.screens
 //import com.example.healthsensoravance.components.BaseContentScreen
 //
 //@Composable
-//fun DatosSaludScreen(navController: NavHostController) {
-//    BaseContentScreen(title = "Modificar Datos de Salud", showBack = true, navController = navController) {
-//        Text("Aquí podrás modificar tu peso, altura, metas de ejercicio, etc.", Modifier.padding(16.dp))
+//fun AcceScreen(navController: NavHostController) {
+//    BaseContentScreen(title = "Accesibilidad", showBack = true, navController = navController) {
+//        Text("Aquí podrás ver todas las opciones de accesibilidad que tenemos, etc.", Modifier.padding(16.dp))
 //    }
 //}

@@ -34,6 +34,8 @@ fun ConfiguracionScreen(navController: NavHostController, paddingValues: Padding
             SettingItem("Modificar Datos de Salud", Icons.Default.Favorite, onClick = { navController.navigate(Routes.DATOS_SALUD) })
             Divider(color = Color.LightGray.copy(alpha = 0.3f))
             SettingItem("Soporte y Ayuda", Icons.Default.Info, onClick = {  })
+            Divider(color = Color.LightGray.copy(alpha = 0.3f))
+            SettingItem("Accesibilidad", Icons.Default.AccountCircle, onClick = { navController.navigate(Routes.ACCESIBILIDAD) })
         }
     }
 }

@@ -11,5 +11,11 @@ package com.example.healthsensoravance
         const val PERFIL = "perfil"
         const val DATOS_SALUD = "datos_salud"
         const val QR = "QR"
+        const val ACCESIBILIDAD = "accesibilidad"
+
+        const val SyncData = "sync-data"
+
+        const val historial = "historial"
+
 
     }

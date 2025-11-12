@@ -1,3 +1,4 @@
+// Archivo: com/example/healthsensoravance/screens/ArchivoScreen.kt
 package com.example.healthsensoravance.screens
 
 import androidx.compose.foundation.layout.*
@@ -7,35 +8,55 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.compose.ui.platform.LocalConfiguration
 import com.example.healthsensoravance.Routes
 import com.example.healthsensoravance.components.BaseContentScreen
-import com.example.healthsensoravance.components.FeatureCard
+import com.example.healthsensoravance.components.FeatureCard // <-- Asegúrate de que esta importación sea correcta
+import androidx.compose.ui.Alignment
+
 @Composable
 fun ArchivoScreen(navController: NavHostController, paddingValues: PaddingValues) {
-    BaseContentScreen(title = "Archivo y Documentación", paddingValues = paddingValues) {
-        val isLandscape = LocalConfiguration.current.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+    BaseContentScreen(title = "Opciones", paddingValues = paddingValues) {
+
         val gridItems = listOf(
             Triple("Ficha Médica", Icons.Default.FavoriteBorder, Routes.FICHA_MEDICA),
             Triple("Recordatorios", Icons.Default.DateRange, Routes.RECORDATORIOS),
-            Triple("QR", Icons.Default.DateRange, Routes.QR),
-
-
+            Triple("QR", Icons.Default.QrCodeScanner, Routes.QR),
+            Triple("Sincronizar Datos", Icons.Default.Sync, Routes.QR),
+            Triple("Registros", Icons.Default.Assessment, Routes.QR)
         )
 
-        Row(
+        val itemPairs = gridItems.chunked(2)
+
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = if (isLandscape) Arrangement.SpaceEvenly else Arrangement.SpaceBetween
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            gridItems.forEach { (label, icon, route) ->
-                FeatureCard(
-                    label = label,
-                    icon = icon,
-                    onClick = { navController.navigate(route) },
-                    modifier = if (isLandscape) Modifier.width(200.dp) else Modifier.width(150.dp)
-                )
+            itemPairs.forEach { pair ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Min),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    pair.forEach { (label, icon, route) ->
+                        // Aquí usamos el FeatureCard con el nuevo estilo
+                        FeatureCard(
+                            label = label,
+                            icon = icon,
+                            onClick = { navController.navigate(route) },
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                        )
+                    }
+
+                    if (pair.size == 1) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
             }
         }
     }

@@ -2,7 +2,7 @@ package com.example.healthsensoravance.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val PrimaryBlue = Color(0xFF2563EB)
+val PrimaryBlue = Color(0xFF3F51B5)
 val BackgroundWhite = Color(0xFFFFFFFF)
 val DarkText = Color(0xFF1F2937)
 val PurpleGrey80 = Color(0xFFCCC2DC)
