@@ -16,12 +16,12 @@ import androidx.compose.material3.Icon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PerfilScreen(navController: NavHostController) {
+fun SoporteScreen(navController: NavHostController) {
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Perfil y Contactos de Emergencia") },
+                title = { Text("Soporte y Ayuda") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Regresar")
@@ -31,7 +31,7 @@ fun PerfilScreen(navController: NavHostController) {
         }
     ) { paddingValues ->
         Text(
-            "Aquí podrás ver todas las opciones de perfil y contactos de emergencia que tenemos, etc.",
+            "Aquí podrás ver todas las opciones de soporte y ayuda que tenemos, etc.",
             Modifier
                 .padding(paddingValues)
                 .padding(16.dp)

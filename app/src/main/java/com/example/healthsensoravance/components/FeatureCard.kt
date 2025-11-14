@@ -1,4 +1,3 @@
-// Archivo: com/example/healthsensoravance/components/FeatureCard.kt
 package com.example.healthsensoravance.components
 
 import androidx.compose.foundation.BorderStroke
@@ -6,7 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.* // Usamos Material 3 para los colores y algunos componentes si es posible.
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,50 +23,47 @@ fun FeatureCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Color principal de tu marca (azul #2563EB)
-    val brandBlue = Color(0xFF3F51B5) // Convierte el hex a un Color de Compose
+    val brandBlue = Color(0xFF3F51B5)
 
-    // Estado para detectar si el botón está presionado
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    // Define los colores y el borde basado en si está presionado
-    val containerColor = if (isPressed) Color.White else brandBlue // Blanco si está presionado, azul si no
-    val contentColor = if (isPressed) brandBlue else Color.White // Azul si está presionado, blanco si no
-    val borderColor = if (isPressed) brandBlue else Color.Transparent // Borde azul si está presionado
+    val containerColor = if (isPressed) Color.White else brandBlue
+    val contentColor = if (isPressed) brandBlue else Color.White
+    val borderColor = if (isPressed) brandBlue else Color.Transparent
 
     Card(
         modifier = modifier
-            .aspectRatio(1f) // Para que sea cuadrado o casi cuadrado, haciendo el contenido más centrado
-            .fillMaxWidth(), // Ocupa el ancho disponible
-        shape = RoundedCornerShape(12.dp), // Esquinas redondeadas
+            .aspectRatio(1f)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = containerColor,
             contentColor = contentColor
         ),
-        border = BorderStroke(2.dp, borderColor), // Borde dinámico
+        border = BorderStroke(2.dp, borderColor),
         onClick = onClick,
-        interactionSource = interactionSource // Asocia el InteractionSource al Card
+        interactionSource = interactionSource
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp), // Espaciado interno
+                .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = label,
-                modifier = Modifier.size(48.dp) // Icono más grande
+                modifier = Modifier.size(48.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp)) // Espacio entre icono y texto
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = label,
-                fontSize = 18.sp, // Texto más grande
-                fontWeight = FontWeight.SemiBold, // Un poco más audaz
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
-                lineHeight = 24.sp // Para evitar que se amontone si es de dos líneas
+                lineHeight = 24.sp
             )
         }
     }

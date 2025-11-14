@@ -1,16 +1,40 @@
 package com.example.healthsensoravance.screens
 
-//import androidx.compose.foundation.layout.padding
-//import androidx.compose.material3.Text
-//import androidx.compose.runtime.Composable
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.unit.dp
-//import androidx.navigation.NavHostController
-//import com.example.healthsensoravance.components.BaseContentScreen
-//
-//@Composable
-//fun DatosSaludScreen(navController: NavHostController) {
-//    BaseContentScreen(title = "Modificar Datos de Salud", showBack = true, navController = navController) {
-//        Text("Aquí podrás modificar tu peso, altura, metas de ejercicio, etc.", Modifier.padding(16.dp))
-//    }
-//}
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Icon
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatosSaludScreen(navController: NavHostController) {
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Modificar tus datos de salud") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Regresar")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Text(
+            "Aquí podrás ver todas las opciones de pmodificar tus datos de salud que tenemos, etc.",
+            Modifier
+                .padding(paddingValues)
+                .padding(16.dp)
+        )
+    }
+}

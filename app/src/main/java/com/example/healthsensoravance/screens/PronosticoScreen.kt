@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Opacity
 import androidx.compose.material.icons.filled.ShowChart
 import androidx.compose.material.icons.filled.SsidChart
@@ -28,45 +27,41 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.healthsensoravance.Routes
 import com.example.healthsensoravance.components.BaseContentScreen
 import com.example.healthsensoravance.ui.theme.DarkText
 import com.example.healthsensoravance.ui.theme.PrimaryBlue
 
 @Composable
-fun PronosticoScreen(paddingValues: PaddingValues) {
+fun PronosticoScreen(navController: NavHostController, paddingValues: PaddingValues) {
     BaseContentScreen(title = "Pronóstico de Salud", paddingValues = paddingValues) {
         val configuration = LocalConfiguration.current
         val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
-        // El número de columnas se aplica solo a la reJilla de métricas vitales
         val columns = if (isLandscape) 2 else 1
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(columns),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp), // Padding horizontal para toda la grid
+                .padding(horizontal = 16.dp),
             contentPadding = PaddingValues(bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp), // Espacio entre todos los items
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // 1. Sección Superior (Texto y campana)
             item(span = { GridItemSpan(columns) }) {
                 TopSection()
             }
 
-            // 2. Tarjeta de Estado de Salud (Gráfica)
             item(span = { GridItemSpan(columns) }) {
-                HealthStatusCard()
+                HealthStatusCard(navController)
             }
 
-            // 3. Tarjeta de Signos Vitales en Peligro
             item(span = { GridItemSpan(columns) }) {
                 VitalSignsCard()
             }
 
-            // 4. Tu "slide" de datos (la rejilla original)
-            // Agregamos un título para esta sección
             item(span = { GridItemSpan(columns) }) {
                 Text(
                     "Métricas Vitales (Últimas 24h)",
@@ -77,7 +72,6 @@ fun PronosticoScreen(paddingValues: PaddingValues) {
                 )
             }
 
-            // Tus 10 items originales
             items(10) { index ->
                 MetricCard(index = index)
             }
@@ -95,7 +89,7 @@ private fun TopSection() {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = " Dado los ultimos datos recividos hemos de darte a conocer que la precion esta en un punto por encima del promedio, el oxigeno en tu sangre se encuentra deficiente y tu pulso esta en un punto por debajo del promedio",
+            text = "Dado los ultimos datos recividos hemos de darte a conocer que la precion esta en un punto por encima del promedio, el oxigeno en tu sangre se encuentra deficiente y tu pulso esta en un punto por debajo del promedio",
             color = DarkText.copy(alpha = 0.8f),
             fontSize = 14.sp,
             modifier = Modifier.weight(1f)
@@ -105,7 +99,7 @@ private fun TopSection() {
 }
 
 @Composable
-private fun HealthStatusCard() {
+private fun HealthStatusCard(navController: NavHostController) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -124,14 +118,18 @@ private fun HealthStatusCard() {
                     fontWeight = FontWeight.Bold,
                     color = DarkText
                 )
-                Icon(
-                    imageVector = Icons.Filled.CalendarToday,
-                    contentDescription = "Calendario",
-                    tint = PrimaryBlue
-                )
+                IconButton(
+                    onClick = { navController.navigate(Routes.RECORDATORIOS) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.CalendarToday,
+                        contentDescription = "Calendario",
+                        tint = Color(0xFF3F51B5)
+                    )
+                }
+
             }
             Spacer(modifier = Modifier.height(24.dp))
-            // Aquí va la gráfica (usamos un Canvas de ejemplo)
             LineGraphComposable()
         }
     }
@@ -156,11 +154,10 @@ private fun LineGraphComposable() {
             val xStep = width / (points.size - 1)
             val yToPixel = { y: Float -> height - ((y - yMin) / (yMax - yMin)) * height }
 
-            // Dibujar líneas de cuadrícula punteadas
             val dashEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
             (0..2).forEach { i ->
-                val y = height * (i / 2f) // 0%, 50%, 100%
-                if (i != 2) { // No dibujar la línea inferior, la dibujamos sólida
+                val y = height * (i / 2f)
+                if (i != 2) {
                     drawLine(
                         color = Color.LightGray,
                         start = Offset(0f, y),
@@ -170,7 +167,6 @@ private fun LineGraphComposable() {
                     )
                 }
             }
-            // Línea de base
             drawLine(
                 color = Color.Gray,
                 start = Offset(0f, height),
@@ -178,7 +174,6 @@ private fun LineGraphComposable() {
                 strokeWidth = 1.5f
             )
 
-            // Dibujar la gráfica
             points.forEachIndexed { index, y ->
                 val x = index * xStep
                 val yPx = yToPixel(y)
@@ -195,7 +190,6 @@ private fun LineGraphComposable() {
                 style = Stroke(width = 5f)
             )
 
-            // Dibujar puntos
             points.forEachIndexed { index, y ->
                 val x = index * xStep
                 val yPx = yToPixel(y)
@@ -209,7 +203,6 @@ private fun LineGraphComposable() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Etiquetas del eje X
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -262,11 +255,11 @@ private fun VitalSignsCard() {
                 text = "Presión arterial con tendencia a subir"
             )
             VitalSignItem(
-                icon = Icons.Filled.SsidChart, // Icono de pulso
+                icon = Icons.Filled.SsidChart,
                 text = "Signos cardiacos con propensión a fallar"
             )
             VitalSignItem(
-                icon = Icons.Filled.Opacity, // Icono de gota
+                icon = Icons.Filled.Opacity,
                 text = "Oxígeno en la sangre se mantiene"
             )
         }
@@ -293,13 +286,12 @@ private fun VitalSignItem(icon: ImageVector, text: String) {
     }
 }
 
-// Esta es tu tarjeta original del LazyVerticalGrid
 @Composable
 private fun MetricCard(index: Int) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp), // Altura fija
+            .height(120.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = PrimaryBlue.copy(alpha = 0.1f))
     ) {

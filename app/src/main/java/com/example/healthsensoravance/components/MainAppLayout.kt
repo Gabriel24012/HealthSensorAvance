@@ -24,6 +24,6 @@ fun MainAppLayout(
 }
 sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
     object Pronostico : BottomNavItem(Routes.PRONOSTICO, Icons.Default.DateRange, "Pronóstico")
-    object Archivo : BottomNavItem(Routes.ARCHIVO, Icons.Default.Menu, "Opciones")
+    object Archivo : BottomNavItem(Routes.OPCIONES, Icons.Default.Menu, "Opciones")
     object Configuracion : BottomNavItem(Routes.CONFIGURACION, Icons.Default.Settings, "Ajustes")
 }

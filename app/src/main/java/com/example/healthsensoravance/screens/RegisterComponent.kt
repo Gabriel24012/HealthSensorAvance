@@ -15,9 +15,11 @@ import androidx.navigation.NavHostController
 import androidx.compose.material3.Surface
 import com.example.healthsensoravance.ui.theme.PrimaryBlue
 import com.example.healthsensoravance.ui.theme.DarkText
-
 @Composable
-fun RegisterComponent(navController: NavHostController) {
+fun RegisterComponent(
+    navController: NavHostController,
+    onRegisterSuccess: () -> Unit
+) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -49,7 +51,9 @@ fun RegisterComponent(navController: NavHostController) {
             }
 
             Button(
-                onClick = { navController.popBackStack() },
+                onClick = {
+                    onRegisterSuccess()
+                },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue)
@@ -57,6 +61,7 @@ fun RegisterComponent(navController: NavHostController) {
                 Text("Registrarse", fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
             Spacer(modifier = Modifier.height(16.dp))
+
             TextButton(onClick = { navController.popBackStack() }) {
                 Text("Volver a Iniciar Sesión", color = PrimaryBlue)
             }

@@ -37,22 +37,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-
-// --- CAMBIOS CLAVE ---
-import androidx.compose.foundation.layout.PaddingValues // 1. Importar PaddingValues
-import com.example.healthsensoravance.components.BaseContentScreen // 2. Importar tu plantilla
+import androidx.compose.foundation.layout.PaddingValues
+import com.example.healthsensoravance.components.BaseContentScreen
 
 @Composable
 fun FichaMedicaScreen(
     navController: NavHostController,
-    paddingValues: PaddingValues // 3. Recibir los PaddingValues
+    paddingValues: PaddingValues
 ) {
-    // Todas tus variables 'remember' se quedan igual
     var edad by remember { mutableStateOf("") }
     var peso by remember { mutableStateOf("") }
     var altura by remember { mutableStateOf("") }
@@ -69,22 +65,15 @@ fun FichaMedicaScreen(
     var hasCirugias by remember { mutableStateOf(true) }
     var cirugiasDetails by remember { mutableStateOf("") }
 
-    // 4. Usar la plantilla BaseContentScreen
     BaseContentScreen(title = "Ficha Médica", paddingValues = paddingValues) {
 
-        // 5. El Column ahora va adentro y es el 'content'
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                // 6. El padding vertical ya lo maneja la plantilla,
-                //    así que solo dejamos el horizontal para el formulario.
                 .padding(horizontal = 16.dp)
         ) {
 
-            // 7. El Text() manual del título SE ELIMINA de aquí
-
-            // El resto de tu formulario se queda exactamente igual
             InfoTextField(
                 value = edad,
                 onValueChange = { edad = it },
@@ -200,18 +189,10 @@ fun FichaMedicaScreen(
             ) {
                 Text("Generar QR para médico", fontSize = 16.sp)
             }
-
-            // Agregamos un Spacer al final para que el último botón
-            // no quede pegado al BottomBar al hacer scroll
             Spacer(Modifier.height(16.dp))
         }
     }
 }
-
-// ------------------------------------------------------------------
-// --- TUS COMPOSABLES PRIVADOS (SIN CAMBIOS) ---
-// ------------------------------------------------------------------
-
 @Composable
 private fun InfoTextField(
     value: String,

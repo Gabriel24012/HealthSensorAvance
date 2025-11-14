@@ -35,19 +35,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import java.util.Calendar
-
-// --- CAMBIOS CLAVE ---
-import androidx.compose.foundation.layout.PaddingValues // 1. Importar PaddingValues
-import com.example.healthsensoravance.components.BaseContentScreen // 2. Importar tu plantilla
-import androidx.compose.foundation.rememberScrollState // Para el scroll
-import androidx.compose.foundation.verticalScroll // Para el scroll
+import androidx.compose.foundation.layout.PaddingValues
+import com.example.healthsensoravance.components.BaseContentScreen
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 
 data class MedicationReminder(val name: String, val time: String)
 
 @Composable
 fun RecordatoriosScreen(
     navController: NavHostController,
-    paddingValues: PaddingValues // 3. Recibir los PaddingValues
+    paddingValues: PaddingValues
 ) {
 
     val reminders = remember {
@@ -60,30 +58,15 @@ fun RecordatoriosScreen(
     var medicationTime by remember { mutableStateOf("") }
     val context = LocalContext.current
 
-    // 4. Usar la plantilla BaseContentScreen
     BaseContentScreen(title = "Recordatorios", paddingValues = paddingValues) {
 
-        // 5. El Column ahora va adentro y es el 'content'
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()) // Añadido para scrolling
-                // 6. Padding solo horizontal, el vertical lo maneja la plantilla
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-
-            // 7. EL TÍTULO MANUAL SE ELIMINA DE AQUÍ
-            /*
-            Text(
-                text = "Recordatorios",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF0D47A1)
-            )
-            */
-
-            // El resto de tu contenido se queda igual
             Text(
                 text = "Medicamentos actuales",
                 style = MaterialTheme.typography.titleLarge,
@@ -163,12 +146,11 @@ fun RecordatoriosScreen(
                 onClick = { /* Aquí iría la lógica para probar una notificación */ },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)) // Verde
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
             ) {
                 Text(text = "Probar Notificación", Modifier.padding(vertical = 8.dp))
             }
 
-            // Spacer al final para que el scroll no tape el último botón
             Spacer(Modifier.height(16.dp))
         }
     }

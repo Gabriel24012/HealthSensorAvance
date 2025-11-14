@@ -1,36 +1,49 @@
-// Archivo: com/example/healthsensoravance/screens/ArchivoScreen.kt
 package com.example.healthsensoravance.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.healthsensoravance.Routes
 import com.example.healthsensoravance.components.BaseContentScreen
-import com.example.healthsensoravance.components.FeatureCard // <-- Asegúrate de que esta importación sea correcta
+import com.example.healthsensoravance.components.FeatureCard
 import androidx.compose.ui.Alignment
 
 @Composable
-fun ArchivoScreen(navController: NavHostController, paddingValues: PaddingValues) {
+fun OpcionesScreen(navController: NavHostController, paddingValues: PaddingValues) {
     BaseContentScreen(title = "Opciones", paddingValues = paddingValues) {
 
         val gridItems = listOf(
             Triple("Ficha Médica", Icons.Default.FavoriteBorder, Routes.FICHA_MEDICA),
             Triple("Recordatorios", Icons.Default.DateRange, Routes.RECORDATORIOS),
             Triple("QR", Icons.Default.QrCodeScanner, Routes.QR),
-            Triple("Sincronizar Datos", Icons.Default.Sync, Routes.QR),
-            Triple("Registros", Icons.Default.Assessment, Routes.QR)
+            Triple("Sincronizar Datos", Icons.Default.Sync, Routes.SyncData),
+            Triple("Registros", Icons.Default.Assessment, Routes.REGISTROS)
         )
 
-        val itemPairs = gridItems.chunked(2)
+        val configuration = LocalConfiguration.current
+        val orientation = configuration.orientation
+
+        val (numColumns, rowHeight) = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Pair(4, 200.dp)
+        } else {
+            Pair(2, 180.dp)
+        }
+
+        val itemPairs = gridItems.chunked(numColumns)
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -38,11 +51,10 @@ fun ArchivoScreen(navController: NavHostController, paddingValues: PaddingValues
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(IntrinsicSize.Min),
+                        .height(rowHeight),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     pair.forEach { (label, icon, route) ->
-                        // Aquí usamos el FeatureCard con el nuevo estilo
                         FeatureCard(
                             label = label,
                             icon = icon,
@@ -53,8 +65,11 @@ fun ArchivoScreen(navController: NavHostController, paddingValues: PaddingValues
                         )
                     }
 
-                    if (pair.size == 1) {
-                        Spacer(modifier = Modifier.weight(1f))
+                    if (pair.size < numColumns) {
+                        val spacersToAdd = numColumns - pair.size
+                        repeat(spacersToAdd) {
+                            Spacer(modifier = Modifier.weight(1f).fillMaxHeight())
+                        }
                     }
                 }
             }

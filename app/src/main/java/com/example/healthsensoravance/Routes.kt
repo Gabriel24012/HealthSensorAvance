@@ -4,7 +4,7 @@ package com.example.healthsensoravance
         const val LOGIN = "login"
         const val REGISTER = "register"
         const val PRONOSTICO = "pronostico"
-        const val ARCHIVO = "archivo"
+        const val OPCIONES = "opciones"
         const val CONFIGURACION = "configuracion"
         const val FICHA_MEDICA = "ficha_medica"
         const val RECORDATORIOS = "recordatorios"
@@ -12,10 +12,9 @@ package com.example.healthsensoravance
         const val DATOS_SALUD = "datos_salud"
         const val QR = "QR"
         const val ACCESIBILIDAD = "accesibilidad"
-
         const val SyncData = "sync-data"
-
-        const val historial = "historial"
+        const val REGISTROS = "registros"
+        const val SOPORTE = "soporte"
 
 
     }

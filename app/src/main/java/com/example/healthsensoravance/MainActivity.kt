@@ -17,7 +17,10 @@ import com.example.healthsensoravance.ui.theme.HealthSensorTheme
 @Composable
 fun PreviewHealthSensorApp() {
     HealthSensorTheme {
-        LoginComponent(navController = rememberNavController())
+        LoginComponent(
+            navController = rememberNavController(),
+            onLoginSuccess = {}
+        )
     }
 }
 

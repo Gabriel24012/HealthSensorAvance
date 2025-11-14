@@ -29,24 +29,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
-// No usaremos BaseContentScreen aquí para tener control total del diseño
 @Composable
 fun QR(navController: NavHostController) {
 
-    // Usamos Scaffold para un fondo consistente
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = Color(0xFFF0F2F5) // Un color de fondo gris claro como en la imagen
+        containerColor = Color(0xFFF0F2F5)
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp) // Margen exterior para la tarjeta
-                .verticalScroll(rememberScrollState()), // Permite scroll si el contenido es muy largo
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Tarjeta principal que contiene todo
             Card(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -57,12 +54,11 @@ fun QR(navController: NavHostController) {
                 Column(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    // --- SECCIÓN SUPERIOR AZUL ---
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(
-                                Color(0xFF3F51B5), // Color azul similar al de la imagen
+                                Color(0xFF3F51B5),
                                 shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
                             )
                             .padding(24.dp),
@@ -87,7 +83,6 @@ fun QR(navController: NavHostController) {
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        // Placeholder para el Código QR
                         Card(
                             modifier = Modifier.size(250.dp),
                             shape = RoundedCornerShape(16.dp),
@@ -108,9 +103,8 @@ fun QR(navController: NavHostController) {
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        // Botón "Volver a ficha médica"
                         Button(
-                            onClick = { navController.popBackStack() }, // Acción para volver atrás
+                            onClick = { navController.popBackStack() },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.White
@@ -119,14 +113,13 @@ fun QR(navController: NavHostController) {
                         ) {
                             Text(
                                 text = "Volver a ficha médica",
-                                color = Color(0xFF3F51B5), // Color del texto azul
+                                color = Color(0xFF3F51B5),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
                             )
                         }
                     }
 
-                    // --- SECCIÓN INFERIOR BLANCA ---
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -141,16 +134,15 @@ fun QR(navController: NavHostController) {
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Tarjeta para el resumen
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(containerColor = Color.White),
-                            border = BorderStroke(1.dp, Color(0xFFE0E0E0)) // Borde sutil
+                            border = BorderStroke(1.dp, Color(0xFFE0E0E0))
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp) // Espacio entre textos
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(text = "Edad: ...", color = Color.Black, fontSize = 14.sp)
                                 Text(text = "Alergias: ...", color = Color.Black, fontSize = 14.sp)
